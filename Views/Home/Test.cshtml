@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Test";
+    @model List<User>;
+}
+<div class=" test " >
+<h1>Test</h1>
+<h1>@ViewBag.testcooki</h1>
+    <h5> @ViewBag.idItem </h5>
+    @foreach( User user in ViewBag.TestlistCartinUser )
+    {
+        foreach(CartItem item in user?.CartItems)
+        {
+          <li> @user?.CookiId -  @item.ItemId</li>
+        }
+   
+    }
+</div>
+

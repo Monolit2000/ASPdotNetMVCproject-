@@ -1,0 +1,128 @@
+
+*,*:before,*:after{
+
+    
+
+}
+
+html {
+  font-size: 14px;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+    background-image: url(/Rec.png);
+    height: 1084px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+  
+}
+
+
+nav {
+    margin: 0px 80px;
+    padding-top: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-sizing: border-box;
+}
+
+.shape {
+    text-align: right;
+    justify-content: flex-end;
+    box-sizing: border-box;
+}
+
+.navitem {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+    margin-left: 90px;
+    box-sizing: border-box;
+    transition: color 0.3s linear;
+}
+.navitem:hover{
+
+    color: #ff6a00;
+}
+
+.mid-text {
+    margin-top: 40px;
+    color: #ffffff;
+    font-size: 80px;
+    text-align: center;
+    top: 170px;
+}
+.ander-mid-text {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 24px;
+    line-height: 160%;
+    opacity: 0.8;
+}
+.SearchField{
+    text-align: center;
+}
+
+.test{
+    color: #ffffff;
+}
+.MarketPlase {
+    text-align: center;
+}
+
+.best-Product {
+    font-size: 42px;
+}
+.item-name {
+    
+    font-size: 21.3251px;
+    line-height: 26px;
+}
+.chusitem {
+    font-weight: 600;
+    color: #000000;
+}
+.price-shap {
+    display: flex;
+    justify-content: space-around;
+}
+.item-item-cart {
+    width: 217.9px;
+    height: 255.9px;
+    border-block-color: #808080;
+}
+
+.MarketPlase {
+    background: #F7F7F7;
+    height: 2000px;
+}
+.item-card {
+    justify-content: space-around;
+    width: 268.09px;
+    height: 441.73px;
+    background: #ffffff;
+    border-radius: 20px;
+}
+.item-card-lain {
+    display: flex;
+    justify-content: space-around;
+    
+}
+.durnja {
+    display: flex;
+    justify-content: space-around;
+}
+.CartId {
+    color: #ffffff;
+}

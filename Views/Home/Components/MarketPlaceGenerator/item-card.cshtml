@@ -1,0 +1,29 @@
+﻿
+@model IEnumerable<WebApplication1.Models.CartItem>
+
+ @foreach( var item in Model )
+{ 
+
+     <div class="item-card">
+           <img src="/Stul.png" class="item-item-cart">
+
+           <p class="item ">Chair number:: @item.ItemId </p>
+           <p class="item-name"> @item.ItemName </p>
+
+           <div class="reiting-star"></div>
+
+           <div class="price-shap">
+                <p class="price">@item.Price</p>
+               <form>
+                     <button formmethod="post" formaction="/Home/AddUserItemCaunt" type="submit" name="ItemId" value="@item.ItemId" class="goto shap">+</button>
+               </form>
+   
+               <form>
+                     <button formmethod="post" formaction="/Home/Delete" type="submit" name="idItem" value="@item.ItemId" class="goto shap">-</button>
+               </form>
+           
+           </div>
+      </div>
+   
+}  
+ 

@@ -1,0 +1,78 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header >
+            <nav>
+              <div class="Logo"> 
+                <img src="/Panto.png"  >
+              </div>
+
+              <div class = "nav" >
+                  <a class = "navitem" href="/Home/AddItem"> Furniture</a>
+                  <a class = "navitem" href="/Authorization/GetAuthorizationField"> Shop </a>
+                  <a class = "navitem" href="/Home/Test"> About Us </a>
+                  <a class = "navitem" href="/Home/ShowAddItems"> Contact </a>
+              </div>
+
+              <div class="shape"> 
+                <a href = "/Home/Privacy">
+                    <img src="/Shape.png"/>
+                </a>
+                @await Component.InvokeAsync("sheip")
+              </div>
+
+            </nav>
+        <div class="mid-text">
+
+            <p>Make your interior more<br/>
+                minimalistic & modern<p/>
+
+        </div>
+        <div class="ander-mid-text">
+
+            <p>Turn your room with panto into a lot more minimalist<br/> 
+                           and modern with ease and speed<p/>
+        </div>
+
+        <div class=" SearchField " >
+           
+            @await Html.PartialAsync("SearchField");
+        @*    @await Html.PartialAsync("GetAuthorizationField");*@
+
+        </div>
+         
+         @RenderBody()
+    </header>
+   
+    <div class="MarketPlase">
+                <p class = "best-Product">Best Selling Produc </p>
+
+                <div class="chus-form">
+                      <a class = "chusitem" href=""> Chair</a>
+                      <a class = "chusitem" href=""> Beds </a>
+                      <a class = "chusitem" href=""> Sofa</a>
+                      <a class = "chusitem" href=""> Lamp </a>
+                </div>
+                  
+                        
+                    <div class=" item-card-lain">            
+                      @* @await Html.PartialAsync("item-card")  <vc:market-place /> *@
+                      @await Component.InvokeAsync("MarketPlaceGenerator")
+                     
+                    </div>     
+    </div>    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+   
+</body>
+</html>

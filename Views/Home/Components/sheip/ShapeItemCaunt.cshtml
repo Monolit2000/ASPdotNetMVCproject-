@@ -1,0 +1,20 @@
+﻿
+
+
+@{
+      //@model WebApplication1.Models.User 
+    @model IEnumerable<WebApplication1.Models.CartItem>
+}
+
+    @foreach(CartItem cart in Model )
+    {
+        <li class="CartId" >  @cart.ItemId  <form asp-action="DeleteUserItemShaip" asp-controller="Home">
+              <button formmethod="post" type="submit" name="ItemId"  value="@cart.ItemId" class="goto shap">-</button>
+               </form>  
+        </li>  
+    }
+
+
+
+
+

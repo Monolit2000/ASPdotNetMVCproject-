@@ -1,0 +1,24 @@
+﻿@{
+    @model WebApplication1.Models.CartItem
+
+}
+
+<form method="post" asp-action="AddItem" asp-controller="Home">
+    @*
+    
+    *@
+    
+    <p>
+        <label asp-for="ItemName">Name</label><br />
+        <input type="text" asp-for="ItemName" />
+    </p>
+    <p>
+        <label asp-for="Price">Price</label><br />
+        <input type="number" asp-for="Price" />
+    </p>
+    <p>
+        <input type="submit" value="Отправить" />
+    </p>
+</form>
+
+
