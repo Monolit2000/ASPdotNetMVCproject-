@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WebApplication1.Models;
 
@@ -14,9 +16,12 @@ namespace WebApplication1.Controllers
         //{
         //    _homeController = homeController;
         //}
-  
-        
-        
+        ApplicationContext _db;
+
+        public AuthorizationController(ApplicationContext context )
+        {
+            _db = context;
+        }
 
 
         [HttpGet]
@@ -32,6 +37,14 @@ namespace WebApplication1.Controllers
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+            //if(_db.Users.Any(c => c.CookiId ) )
+            //{
+
+            //}
+            _db.Users.AddAsync(new User { Password = user.Password, Email = user.Email});
+            await _db.SaveChangesAsync();
+
             return RedirectToAction("Index", "Home");   
         }
 

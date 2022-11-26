@@ -23,13 +23,13 @@ namespace WebApplication1.ViewComponent
             User? user = await _db.Users.FirstOrDefaultAsync(u => u.CookiId == GuidId);
             List<CartItem> ItemCountinShape = new List<CartItem>();
 
-                    foreach (var prod in user?.CartItems)
-                    {
-                        ItemCountinShape.Add(prod);
-                        Console.WriteLine($"{prod.ItemId}-----{prod.ItemName}");
-                    }
-              
-           
+            foreach (var prod in user?.CartItems)
+            {
+                ItemCountinShape.Add(prod);
+                Console.WriteLine($"{prod.ItemId}-----{prod.ItemName}");
+            }
+
+
             int caaunt = ItemCountinShape.Count();
 
 

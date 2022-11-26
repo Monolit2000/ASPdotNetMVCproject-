@@ -26,7 +26,6 @@ namespace WebApplication1.Controllers
 
             return View();
         }
-        
 
         public async Task<IActionResult> ShowAddItems()
         {
@@ -85,7 +84,7 @@ namespace WebApplication1.Controllers
             string? UserCooKiId = Request.Cookies["User"];
             ViewBag.idItem = ItemId;
             string? CastomUserId = "CastonUser111";
-       
+     
             CartItem? item = await db.CartItems.FirstOrDefaultAsync(p => p.ItemId == ItemId);
             User? user = await db.Users.FirstOrDefaultAsync(u => u.CookiId == UserCooKiId);
                     user?.CartItems?.Add(item);
@@ -96,6 +95,7 @@ namespace WebApplication1.Controllers
             return View("Test");
         }
 
+        
 
         [HttpPost]
         public async Task <IActionResult> DeleteUserItemShaip(int ItemId)
@@ -143,9 +143,6 @@ namespace WebApplication1.Controllers
         {
             return View("Test", furnitur);
         }
-
-
-
 
         public IActionResult Sait()
         {
