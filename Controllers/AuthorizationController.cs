@@ -34,23 +34,30 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> GetAuthorizationField(User user)
         {
             //return $"{user.id} --- {user.CookiId} --- {user.Email} --- {user.Password}";
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email)};
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            //await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            //if(_db.Users.Any(c => c.CookiId ) )
-            //{
 
-            //}
-            _db.Users.AddAsync(new User { Password = user.Password, Email = user.Email});
+            var claimidentety = new ClaimsIdentity("Test");
+            var claimPrincipal = new ClaimsPrincipal(claimidentety);
+            await HttpContext.SignInAsync(claimPrincipal);
+            
+
+            await _db.Users.AddAsync(new User { Password = user.Password, Email = user.Email});
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");   
         }
 
-        // GET: AuthorizationController
-        public ActionResult Index()
+        [HttpPost]
+        public async Task<ActionResult> Index()
         {
+
+            //var user = await HttpContext.User.Identity;
+
+            //string ggg =  user.AuthenticationType;
             return View();
         }
 

@@ -18,10 +18,11 @@
 
               <div class = "nav" >
                   <a class = "navitem" href="/Home/AddItem"> Furniture</a>
-                  <a class = "navitem" href="/Authorization/GetAuthorizationField"> Shop </a>
+                  <a class = "navitem" href=""> Shop </a>
                   <a class = "navitem" href="/Home/Test"> About Us </a>
                   <a class = "navitem" href="/Home/ShowAddItems"> Contact </a>
               </div>
+
 
               <div class="shape"> 
                 <a href = "/Home/Privacy">
@@ -30,6 +31,10 @@
                 @await Component.InvokeAsync("sheip")
               </div>
 
+
+                <div class="nav">
+                @await Component.InvokeAsync("Autorization") 
+                </div>
             </nav>
         <div class="mid-text">
 
