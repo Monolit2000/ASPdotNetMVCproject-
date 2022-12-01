@@ -14,19 +14,20 @@
             @model WebApplication1.Models.User
         }
 
-        <form id="form" method="post" asp-action="GetAuthorizationField" asp-controller="Authorization">
+        <form id="form" method="post" asp-action="SignInAuthorization" asp-controller="Authorization">
                 <h1>Registration</h1>
                  <div class="input-control">
                     <label asp-for ="Email" >Email</label><br />
-                    <input id="Email" type="text" asp-for="Email" />
+                    <input id="Email" type="email" asp-for="Email" />
                     <div class="error"></div>
                  </div>
             
             <div class="input-control">
                 <label asp-for ="Password">Password</label><br />
-                <input type='password' asp-for ="Password" />
+                <input id="password"  type='password' asp-for ="Password" />
+                <div class="error"></div>
             </div>
             
-            <input type='submit' value='Login' />
+            <input class="buton" type='submit' value='Login' />
         </form>
 </body>
