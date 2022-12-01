@@ -2,6 +2,7 @@
 using Nancy.Json;
 using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
+
 namespace WebApplication1.CastomMiddleware
 {
     public class PreLoginMiddleware
@@ -28,7 +29,15 @@ namespace WebApplication1.CastomMiddleware
                 }
             }
 
-            if (!context.Request.Cookies.ContainsKey("User"))
+            var user = context.User.Identity;
+            if(user.IsAuthenticated)
+            {
+                string? UserCooKiId = context.Request.Cookies[".AspNetCore.Cookies"];
+
+                context.Response.Cookies.Append("User", UserCooKiId);
+            }
+
+            else if (!context.Request.Cookies.ContainsKey("User"))
             {
                 Guid GUID = Guid.NewGuid();
                 string UserGUID = new JavaScriptSerializer().Serialize(GUID);

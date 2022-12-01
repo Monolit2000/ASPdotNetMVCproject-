@@ -21,12 +21,13 @@ namespace WebApplication1.ViewComponent
         {
             //var userClaim = context.User.FindFirst(ClaimTypes.Name);
             var user = User.Identity;
+            var name = user.Name;
             
-            if (/*user is ClaimsIdentity claimsIdentity */ user.IsAuthenticated)
+            if ( user.IsAuthenticated)
             {
-                return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/GetAuthorizationField\">SingOut</a>"));
+                return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignOutAuthorization\"> {name} SingOut</a>"));
             }
-            else return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/GetAuthorizationField\">Login</a>"));
+            else return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignInAuthorization\">Login</a>"));
 
 
 

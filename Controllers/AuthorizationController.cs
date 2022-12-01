@@ -25,13 +25,13 @@ namespace WebApplication1.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAuthorizationField()
+        public IActionResult SignInAuthorization()
         {
-            return PartialView("GetAuthorizationField");
+            return PartialView("SignInAuthorization");
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetAuthorizationField(User user)
+        public async Task<IActionResult> SignInAuthorization(User user)
         {
             //return $"{user.id} --- {user.CookiId} --- {user.Email} --- {user.Password}";
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email)};
@@ -40,25 +40,19 @@ namespace WebApplication1.Controllers
             //await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
 
-            var claimidentety = new ClaimsIdentity("Test");
-            var claimPrincipal = new ClaimsPrincipal(claimidentety);
-            await HttpContext.SignInAsync(claimPrincipal);
-            
-
             await _db.Users.AddAsync(new User { Password = user.Password, Email = user.Email});
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");   
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Index()
+        
+        public async Task<IActionResult> SignOutAuthorization()
         {
 
-            //var user = await HttpContext.User.Identity;
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            //string ggg =  user.AuthenticationType;
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: AuthorizationController/Details/5
