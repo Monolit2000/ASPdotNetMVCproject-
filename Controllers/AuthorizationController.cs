@@ -18,11 +18,29 @@ namespace WebApplication1.Controllers
         //}
         ApplicationContext _db;
 
-        public AuthorizationController(ApplicationContext context )
+        public AuthorizationController(ApplicationContext context)
         {
             _db = context;
         }
 
+        [HttpGet]
+        public IActionResult Registration()
+        {
+            return PartialView("Registration");  
+        }
+
+
+        [HttpPost]
+        public IActionResult Registration(User user)
+        {
+            if (_db.Users.Any( c => c.Email == user.Email && c.Password == user.Password ))
+            {
+                return Content($"Уже зарегестрирован");
+            }
+
+
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpGet]
         public IActionResult SignInAuthorization()
