@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Html;
 
 namespace WebApplication1.ViewComponent
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+
+    
     public class AutorizationViewComponent : ViewComponent
     {
         ApplicationContext db;
@@ -24,10 +27,10 @@ namespace WebApplication1.ViewComponent
             var name = user.Name;
             
             if ( user.IsAuthenticated)
-            {
+            {          
                 return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignOutAuthorization\"> {name} SingOut</a>"));
             }
-            else return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignInAuthorization\">Login</a>"));
+            else return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignInAuthorization\">Login</a>  <a class=\"navitem\" href=\"/Authorization/Registration\">Registration</a>"));
 
 
 

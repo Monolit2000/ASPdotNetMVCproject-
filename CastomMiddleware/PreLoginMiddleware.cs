@@ -17,25 +17,46 @@ namespace WebApplication1.CastomMiddleware
 
         public async Task InvokeAsync(HttpContext context, ApplicationContext _db)
         {
+            var user = context.User.Identity;
+            string? UserCooKiId = context.Request.Cookies["User"];
 
             if (context.Request.Cookies.ContainsKey("User"))
             {
-                string? UserCooKiId = context.Request.Cookies["User"];
-
-                if (!_db.Users.Any(a => a.CookiId == UserCooKiId))
+                if (!user.IsAuthenticated)
                 {
-                    await _db.Users.AddAsync(new User { CookiId = UserCooKiId });
+                    if (!_db.Users.Any(a => a.CookiId == UserCooKiId))
+                    {
+                        await _db.Users.AddAsync(new User { CookiId = UserCooKiId });
+                        await _db.SaveChangesAsync();
+                    }
+                }
+                else if(user.IsAuthenticated)
+                {
+
+                    var userInDb = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == UserCooKiId);
+                    string? UserCookies = context.Request.Cookies[".AspNetCore.Cookies"];
+                   // userInDb.CookiId = UserCookies;
                     await _db.SaveChangesAsync();
+                    context.Response.Cookies.Append("User", UserCooKiId);
+                    //var putin = await _db.Users.FirstOrDefaultAsync(p => p.CookiId == UserCooKiId);
+                    //if (putin != null) 
+                    //_db.Users.Remove(putin);
+                    //await _db.SaveChangesAsync();
+
                 }
             }
 
-            var user = context.User.Identity;
-            if(user.IsAuthenticated)
-            {
-                string? UserCooKiId = context.Request.Cookies[".AspNetCore.Cookies"];
+            //if (user.IsAuthenticated)
+            //{
+            //    var userInDb = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == UserCooKiId );
+            //    string? UserCookies = context.Request.Cookies[".AspNetCore.Cookies"];
+            //    userInDb.CookiId = UserCookies;
+            //    await _db.SaveChangesAsync();
+            //    context.Response.Cookies.Append("User", UserCookies);
 
-                context.Response.Cookies.Append("User", UserCooKiId);
-            }
+
+
+            //}
 
             else if (!context.Request.Cookies.ContainsKey("User"))
             {
@@ -48,8 +69,13 @@ namespace WebApplication1.CastomMiddleware
                 await _db.SaveChangesAsync();
 
             }
+                              await next.Invoke(context);
+//if(user.IsAuthenticated)
+            //{
+            //    string? UserCooKiId = context.Request.Cookies[".AspNetCore.Cookies"];
 
-
+            //    context.Response.Cookies.Append("User", UserCooKiId);
+            //}
 
 
             //}
@@ -69,7 +95,7 @@ namespace WebApplication1.CastomMiddleware
             //    }
             //}
 
-            await next.Invoke(context);
+            
 
             }
         }

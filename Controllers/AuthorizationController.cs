@@ -31,15 +31,34 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
-        public IActionResult Registration(User user)
+        public async Task<IActionResult> Registration(User user)
         {
-            if (_db.Users.Any( c => c.Email == user.Email && c.Password == user.Password ))
+            if (_db.Users.Any(c => c.Email == user.Email))
             {
-                return Content($"Уже зарегестрирован");
+                string? userCookiId = Request.Cookies["User"];
+                return Content($" {userCookiId} Вже зареєстрований ;) ");
+            }
+            else
+            {
+                var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                       new ClaimsPrincipal(claimsIdentity));
+
+                string? userCookiId = Request.Cookies["User"];
+                var userr = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == userCookiId);
+                userr.Email = user.Email;
+                userr.Password = user.Password;
+                userr.CookiId = userCookiId;
+                //await _db.Users.AddAsync(new User { Password = user.Password,
+                //                                       Email = user.Email,
+                //                                     CookiId = userCookiId });
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
             }
 
 
-            return RedirectToAction("Index", "Home");
+          
         }
 
         [HttpGet]
@@ -52,14 +71,16 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> SignInAuthorization(User user)
         {
             //return $"{user.id} --- {user.CookiId} --- {user.Email} --- {user.Password}";
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email)};
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            //await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-
-            await _db.Users.AddAsync(new User { Password = user.Password, Email = user.Email});
-            await _db.SaveChangesAsync();
+            var userr = await _db.Users.FirstOrDefaultAsync(c => c.Email == user.Email && c.Password == user.Password);
+            if (userr != null)
+            {
+                var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            }
+            else return RedirectToAction("Registration");
+            //await _db.Users.AddAsync(new User { Password = user.Password, Email = user.Email});
+            //await _db.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");   
         }

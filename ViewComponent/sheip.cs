@@ -26,7 +26,7 @@ namespace WebApplication1.ViewComponent
             foreach (var prod in user?.CartItems)
             {
                 ItemCountinShape.Add(prod);
-                Console.WriteLine($"{prod.ItemId}-----{prod.ItemName}");
+                // Console.WriteLine($"{prod.ItemId}-----{prod.ItemName}");
             }
 
 

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
 using Nancy.Json;
+using Microsoft.AspNetCore.Authorization;
 //using System.Net;
 
 namespace WebApplication1.Controllers
@@ -15,7 +16,7 @@ namespace WebApplication1.Controllers
         public HomeController(ILogger<HomeController> logger,
             ApplicationContext Dbcontext)
         {
-            
+
             db = Dbcontext;
         }
 
@@ -40,7 +41,7 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-       
+
         [HttpPost]
 
         // Добавление карточки с товаром и нахуя я делаю админку
@@ -50,7 +51,7 @@ namespace WebApplication1.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        
+
 
         [HttpPost]
         public async Task<IActionResult> getItemToCard(int id)
@@ -59,7 +60,7 @@ namespace WebApplication1.Controllers
             return View("getItemToCardView");
         }
 
- // Удаление карточки с товаром и нахуя я делаю админку 
+        // Удаление карточки с товаром и нахуя я делаю админку 
         [HttpPost]
         public async Task<IActionResult> Delete(int? idItem)
         {
@@ -76,9 +77,10 @@ namespace WebApplication1.Controllers
             return NotFound();
         }
 
-        
-        
+
+
         [HttpPost]
+       // [Authorize]
         public async Task<IActionResult> AddUserItemCaunt(int ItemId)
         {         
             string? UserCooKiId = Request.Cookies["User"];

@@ -15,7 +15,7 @@
         }
 
         <form id="form" method="post" asp-action="SignInAuthorization" asp-controller="Authorization">
-                <h1>Registration</h1>
+                <h1>Login</h1>
                  <div class="input-control">
                     <label asp-for ="Email" >Email</label><br />
                     <input id="Email" type="email" asp-for="Email" />
@@ -29,5 +29,8 @@
             </div>
             
             <input class="buton" type='submit' value='Login' />
+           
+            <button formmethod="post" formaction="/Authorization/Registration" type="submit"  class="buton">Registration</button>
+           
         </form>
 </body>
