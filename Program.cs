@@ -16,6 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 //builder.Services.AddTransient< IPreLoginService, PreLoginService >();
+//builder.Services.AddMvc();
+builder.Services.AddTransient<ICookiAddUserService, CookiAddUser>();
 
 
 

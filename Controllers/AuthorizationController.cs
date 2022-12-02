@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WebApplication1.Models;
+using WebApplication1.CustomService;
 
 namespace WebApplication1.Controllers
 {
@@ -17,10 +18,13 @@ namespace WebApplication1.Controllers
         //    _homeController = homeController;
         //}
         ApplicationContext _db;
-
-        public AuthorizationController(ApplicationContext context)
+        ICookiAddUserService cookiAddUser;
+      //  HttpContext _context;
+        public AuthorizationController(ApplicationContext context, ICookiAddUserService cookiAddUser)
         {
+           // _context = httpcontext;
             _db = context;
+            this.cookiAddUser = cookiAddUser;
         }
 
         [HttpGet]
@@ -88,9 +92,9 @@ namespace WebApplication1.Controllers
         
         public async Task<IActionResult> SignOutAuthorization()
         {
-
+            var _context = HttpContext;
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
+            await cookiAddUser.CookiAddUserAsync(_context, _db);
             return RedirectToAction("Index", "Home");
         }
 

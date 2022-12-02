@@ -3,6 +3,7 @@ using Nancy.Json;
 using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
+using WebApplication1.CustomService;
 
 namespace WebApplication1.CastomMiddleware
 {
@@ -10,9 +11,11 @@ namespace WebApplication1.CastomMiddleware
     {
         private readonly RequestDelegate next;
         //ApplicationContext _db;
-      //  HttpContext _context;
-        public PreLoginMiddleware(RequestDelegate next)
+        //HttpContext _context;
+        ICookiAddUserService cookiAddUser;
+        public PreLoginMiddleware(RequestDelegate next, ICookiAddUserService cookiAddUser)
         {
+            this.cookiAddUser = cookiAddUser;
            // _context = context;
             //_db = DBcontext;
             this.next = next;
@@ -28,6 +31,7 @@ namespace WebApplication1.CastomMiddleware
             {
                 if (!user.IsAuthenticated)
                 {
+                   
                     /////////////////////////////////////////////////
                     if (!_db.Users.Any(a => a.CookiId == UserCooKiId))
                     ///////////////////////////////////////////////////
@@ -55,23 +59,22 @@ namespace WebApplication1.CastomMiddleware
             //при SingOut нужно создовать новый User[Cooki]
             else if (!context.Request.Cookies.ContainsKey("User"))
             {
-
-                await UserAddCooki(context,_db);
+               await cookiAddUser.CookiAddUserAsync(context, _db);   // await UserAddCooki(context,_db);
             }
             await next.Invoke(context);
         
         }
 
-        public async Task UserAddCooki(HttpContext context, ApplicationContext _db)
-        {
-            Guid GUID = Guid.NewGuid();
-            string UserGUID = new JavaScriptSerializer().Serialize(GUID);
-            context.Response.Cookies.Append("User", UserGUID);
+        //public async Task UserAddCooki(HttpContext context, ApplicationContext _db)
+        //{
+        //    Guid GUID = Guid.NewGuid();
+        //    string UserGUID = new JavaScriptSerializer().Serialize(GUID);
+        //    context.Response.Cookies.Append("User", UserGUID);
 
-            string? UserCooKiIdd = context.Request.Cookies["User"];
-            await _db.Users.AddAsync(new User { CookiId = UserGUID });
-            await _db.SaveChangesAsync();
-        }
+        //    string? UserCooKiIdd = context.Request.Cookies["User"];
+        //    await _db.Users.AddAsync(new User { CookiId = UserGUID });
+        //    await _db.SaveChangesAsync();
+        //}
     }
 
 
