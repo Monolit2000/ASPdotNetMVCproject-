@@ -22,11 +22,15 @@ namespace WebApplication1.ViewComponent
              _db.Users.Include(c => c.CartItems).ToList();
             User? user = await _db.Users.FirstOrDefaultAsync(u => u.CookiId == GuidId);
             List<CartItem> ItemCountinShape = new List<CartItem>();
-
-            foreach (var prod in user?.CartItems)
+            if ( user != null)
             {
-                ItemCountinShape.Add(prod);
-                // Console.WriteLine($"{prod.ItemId}-----{prod.ItemName}");
+
+
+                foreach (var prod in user?.CartItems)
+                {
+                    ItemCountinShape.Add(prod);
+                    // Console.WriteLine($"{prod.ItemId}-----{prod.ItemName}");
+                }
             }
 
 

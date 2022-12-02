@@ -5,84 +5,85 @@ build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
 build_property.InvariantGlobalization = 
 build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebApplication1
 build_property.RootNamespace = WebApplication1
-build_property.ProjectDir = C:\Users\DIO\Documents\GitHub\ForLapTop\
+build_property.ProjectDir = C:\Users\СТО\Documents\GitHub\ForLapTop\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\DIO\Documents\GitHub\ForLapTop
+build_property.MSBuildProjectDirectory = C:\Users\СТО\Documents\GitHub\ForLapTop
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Areass/Views/Indexx.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Areass/Views/Indexx.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNzXFZpZXdzXEluZGV4eC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Authorization/Registration.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Authorization/Registration.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yaXphdGlvblxSZWdpc3RyYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Authorization/SignInAuthorization.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Authorization/SignInAuthorization.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aG9yaXphdGlvblxTaWduSW5BdXRob3JpemF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/AddItem.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/AddItem.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBZGRJdGVtLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/Components/MarketPlaceGenerator/item-card.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/Components/MarketPlaceGenerator/item-card.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb21wb25lbnRzXE1hcmtldFBsYWNlR2VuZXJhdG9yXGl0ZW0tY2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/Components/sheip/ShapeItemCaunt.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/Components/sheip/ShapeItemCaunt.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb21wb25lbnRzXHNoZWlwXFNoYXBlSXRlbUNhdW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/Index.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/PartialView.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/PartialView.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXJ0aWFsVmlldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/Privacy.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/Sait.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/Sait.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTYWl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/SearchField.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/SearchField.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTZWFyY2hGaWVsZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/ShowAddItems.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/ShowAddItems.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaG93QWRkSXRlbXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Home/Test.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Home/Test.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Shared/Error.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/_ViewImports.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/_ViewStart.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/DIO/Documents/GitHub/ForLapTop/Views/Shared/_Layout.cshtml]
+[C:/Users/СТО/Documents/GitHub/ForLapTop/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-bddmc6yalx
