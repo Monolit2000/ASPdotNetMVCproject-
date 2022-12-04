@@ -3,7 +3,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.CustomService
 {
-    public class CookiAddUser : ICookiAddUserService
+    public class CookiAddUser : INewCookiAddUserService
     {
 
         public async Task CookiAddUserAsync(HttpContext context, ApplicationContext _db)

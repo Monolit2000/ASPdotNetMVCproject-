@@ -12,10 +12,10 @@ namespace WebApplication1.CastomMiddleware
         private readonly RequestDelegate next;
         //ApplicationContext _db;
         //HttpContext _context;
-        ICookiAddUserService cookiAddUser;
-        public PreLoginMiddleware(RequestDelegate next, ICookiAddUserService cookiAddUser)
+        INewCookiAddUserService CookiAddUser;
+        public PreLoginMiddleware(RequestDelegate next, INewCookiAddUserService cookiAddUser)
         {
-            this.cookiAddUser = cookiAddUser;
+            this.CookiAddUser = cookiAddUser;
            // _context = context;
             //_db = DBcontext;
             this.next = next;
@@ -44,22 +44,25 @@ namespace WebApplication1.CastomMiddleware
                 }
                 else if (user.IsAuthenticated)
                 {
+                    if (context.Request.Cookies.ContainsKey("User"))
+                    {
+                        var userInDb = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == UserCooKiId);
+                        //if (userInDb != null) context.Response.Cookies.Delete();
 
-                    var userInDb = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == UserCooKiId);
+                        string? UserCookies = context.Request.Cookies[".AspNetCore.Cookies"];
+                        userInDb.CookiId = UserCookies;
+                        await _db.SaveChangesAsync();
 
-                    string? UserCookies = context.Request.Cookies[".AspNetCore.Cookies"];
-                    userInDb.CookiId = UserCookies;
-                    await _db.SaveChangesAsync();
-
-                    //!!!!!UserCookies != UserCooKiId
-                    context.Response.Cookies.Append("User", UserCookies);
+                        //!!!!!UserCookies != UserCooKiId
+                        context.Response.Cookies.Append("User", UserCookies);
+                    }
                 }
             }
 
             //при SingOut нужно создовать новый User[Cooki]
             else if (!context.Request.Cookies.ContainsKey("User"))
             {
-               await cookiAddUser.CookiAddUserAsync(context, _db);   // await UserAddCooki(context,_db);
+               await CookiAddUser.CookiAddUserAsync(context, _db);   // await UserAddCooki(context,_db);
             }
             await next.Invoke(context);
         

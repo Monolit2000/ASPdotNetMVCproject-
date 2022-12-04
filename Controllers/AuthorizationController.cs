@@ -17,12 +17,17 @@ namespace WebApplication1.Controllers
         //{
         //    _homeController = homeController;
         //}
+        
         ApplicationContext _db;
-        ICookiAddUserService cookiAddUser;
+        INewCookiAddUserService cookiAddUser;
+        ICoookiUserRegestratorService CookiUserRegestratorService;
+        
       //  HttpContext _context;
-        public AuthorizationController(ApplicationContext context, ICookiAddUserService cookiAddUser)
+        public AuthorizationController(ApplicationContext context, INewCookiAddUserService cookiAddUser, ICoookiUserRegestratorService coookiUserRegestratorService)
         {
-           // _context = httpcontext;
+            
+            // _context = httpcontext;
+            this.CookiUserRegestratorService = coookiUserRegestratorService;
             _db = context;
             this.cookiAddUser = cookiAddUser;
         }
@@ -39,8 +44,8 @@ namespace WebApplication1.Controllers
         {
             if (_db.Users.Any(c => c.Email == user.Email))
             {
-                string? userCookiId = Request.Cookies["User"];
-                return Content($" {userCookiId} Вже зареєстрований ;) ");
+               // string? userCookiId = Request.Cookies["User"];
+                return Content($" {user.CookiId} Вже зареєстрований ;) ");
             }
             else
             {
@@ -49,15 +54,18 @@ namespace WebApplication1.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                        new ClaimsPrincipal(claimsIdentity));
 
+              //  string? userCookiId = Request.Cookies["User"];
+                //string? userCookiId1 = Request.Cookies[".AspNetCore.Cookies"];
+                //Response.Cookies.Append("User", userCookiId1);
                 string? userCookiId = Request.Cookies["User"];
+
+
                 var userr = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == userCookiId);
                 userr.Email = user.Email;
                 userr.Password = user.Password;
                 userr.CookiId = userCookiId;
-                //await _db.Users.AddAsync(new User { Password = user.Password,
-                //                                       Email = user.Email,
-                //                                     CookiId = userCookiId });
                 await _db.SaveChangesAsync();
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -74,6 +82,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public async Task<IActionResult> SignInAuthorization(User user)
         {
+            var httpcontext =  HttpContext;
             //return $"{user.id} --- {user.CookiId} --- {user.Email} --- {user.Password}";
             var userr = await _db.Users.FirstOrDefaultAsync(c => c.Email == user.Email && c.Password == user.Password);
             if (userr != null)
@@ -85,16 +94,18 @@ namespace WebApplication1.Controllers
             else return RedirectToAction("Registration");
             //await _db.Users.AddAsync(new User { Password = user.Password, Email = user.Email});
             //await _db.SaveChangesAsync();
-
+            // await CookiUserRegestratorService.cookiUserRegestrator(httpcontext,_db);
+            httpcontext.Response.Cookies.Append("User",userr.CookiId);
             return RedirectToAction("Index", "Home");   
         }
 
         
         public async Task<IActionResult> SignOutAuthorization()
         {
-            var _context = HttpContext;
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var _context = HttpContext;
             await cookiAddUser.CookiAddUserAsync(_context, _db);
+
             return RedirectToAction("Index", "Home");
         }
 
