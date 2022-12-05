@@ -15,10 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
-//builder.Services.AddTransient< IPreLoginService, PreLoginService >();
-//builder.Services.AddMvc();
 builder.Services.AddTransient<INewCookiAddUserService, CookiAddUser>();
 builder.Services.AddTransient<ICoookiUserRegestratorService, CoookiUserRegestrator>();
+builder.Services.AddTransient<IReversCookiUserToAspcooki, ReversCookiUserToAspcooki>();
 
 
 

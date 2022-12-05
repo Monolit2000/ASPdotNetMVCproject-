@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WebApplication1.Models;
 using WebApplication1.CustomService;
+using Nancy.Security;
+using System.Net.Http;
 
 namespace WebApplication1.Controllers
 {
@@ -21,12 +23,17 @@ namespace WebApplication1.Controllers
         ApplicationContext _db;
         INewCookiAddUserService cookiAddUser;
         ICoookiUserRegestratorService CookiUserRegestratorService;
-        
-      //  HttpContext _context;
-        public AuthorizationController(ApplicationContext context, INewCookiAddUserService cookiAddUser, ICoookiUserRegestratorService coookiUserRegestratorService)
+        IReversCookiUserToAspcooki ReversCookiUserToAspcooki;
+
+        //  HttpContext _context;
+        public AuthorizationController(ApplicationContext context, 
+                                       INewCookiAddUserService cookiAddUser,
+                                       IReversCookiUserToAspcooki ReversCookiUserToAspcooki,
+                                       ICoookiUserRegestratorService coookiUserRegestratorService)
+                                       
         {
-            
-            // _context = httpcontext;
+
+            this.ReversCookiUserToAspcooki = ReversCookiUserToAspcooki;
             this.CookiUserRegestratorService = coookiUserRegestratorService;
             _db = context;
             this.cookiAddUser = cookiAddUser;
@@ -53,6 +60,7 @@ namespace WebApplication1.Controllers
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                        new ClaimsPrincipal(claimsIdentity));
+                
 
               //  string? userCookiId = Request.Cookies["User"];
                 //string? userCookiId1 = Request.Cookies[".AspNetCore.Cookies"];
@@ -65,8 +73,9 @@ namespace WebApplication1.Controllers
                 userr.Password = user.Password;
                 userr.CookiId = userCookiId;
                 await _db.SaveChangesAsync();
-
-                return RedirectToAction("Index", "Home");
+                //var httpcontext = HttpContext;
+                //await ReversCookiUserToAspcooki.reversCookiUserToAspcookiAsync(httpcontext, _db);
+                return RedirectToAction(/*"Index", "Home"*/"ReversCookiUserToAspcookiAction");
             }
 
 
@@ -91,6 +100,7 @@ namespace WebApplication1.Controllers
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             }
+                 
             else return RedirectToAction("Registration");
             //await _db.Users.AddAsync(new User { Password = user.Password, Email = user.Email});
             //await _db.SaveChangesAsync();
@@ -99,7 +109,15 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Index", "Home");   
         }
 
-        
+        public async Task <IActionResult> ReversCookiUserToAspcookiAction()
+        {
+           var httpcontext = HttpContext;
+           await ReversCookiUserToAspcooki.reversCookiUserToAspcookiAsync(httpcontext, _db);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
         public async Task<IActionResult> SignOutAuthorization()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

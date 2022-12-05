@@ -44,18 +44,7 @@ namespace WebApplication1.CastomMiddleware
                 }
                 else if (user.IsAuthenticated)
                 {
-                    if (context.Request.Cookies.ContainsKey("User"))
-                    {
-                        var userInDb = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == UserCooKiId);
-                        //if (userInDb != null) context.Response.Cookies.Delete();
-
-                        string? UserCookies = context.Request.Cookies[".AspNetCore.Cookies"];
-                        userInDb.CookiId = UserCookies;
-                        await _db.SaveChangesAsync();
-
-                        //!!!!!UserCookies != UserCooKiId
-                        context.Response.Cookies.Append("User", UserCookies);
-                    }
+                    
                 }
             }
 

@@ -25,12 +25,11 @@ namespace WebApplication1.ViewComponent
             //var userClaim = context.User.FindFirst(ClaimTypes.Name);
             var user = User.Identity;
             var name = user.Name;
-            
-            if ( user.IsAuthenticated)
-            {          
-                return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignOutAuthorization\"> {name} SingOut</a>"));
-            }
-            else return new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignInAuthorization\">Login</a>  <a class=\"navitem\" href=\"/Authorization/Registration\">Registration</a>"));
+            var SignOut = new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignOutAuthorization\"> {name} SingOut</a>"));
+            var SingIn = new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Authorization/SignInAuthorization\">Login</a>  <a class=\"navitem\" href=\"/Authorization/Registration\">Registration</a>"));
+            return user.IsAuthenticated ? SignOut : SingIn;
+
+
 
 
 
