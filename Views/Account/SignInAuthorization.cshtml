@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebApplication1</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/SignInAuthorization.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication1.SignInAuthorization.css" asp-append-version="true" />
+</head>
+<body>
+
+        @{
+            @model WebApplication1.Models.User
+        }
+
+        <form id="form" method="post" asp-action="SignInAuthorization" asp-controller="Account">
+                <h1>Login</h1>
+                 <div class="input-control">
+                    <label asp-for ="Email" >Email</label><br />
+                    <input id="Email" type="email" asp-for="Email" />
+                    <div class="error"></div>
+                 </div>
+            
+            <div class="input-control">
+                <label asp-for ="Password">Password</label><br />
+                <input id="password"  type='password' asp-for ="Password" />
+                <div class="error"></div>
+            </div>
+            
+            <input class="buton" type='submit' value='Login' />
+           
+            <a class="buton"  href="/Account/Registration">Registration</a>
+            @* <button formmethod="post" formaction="/Authorization/Registration" type="submit"  class="buton">Registration</button>*@
+           
+        </form>
+</body>

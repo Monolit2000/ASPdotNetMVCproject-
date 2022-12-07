@@ -12,8 +12,8 @@ namespace WebApplication1.CastomMiddleware
         private readonly RequestDelegate next;
         //ApplicationContext _db;
         //HttpContext _context;
-        INewCookiAddUserService CookiAddUser;
-        public PreLoginMiddleware(RequestDelegate next, INewCookiAddUserService cookiAddUser)
+        INewCookiAddService CookiAddUser;
+        public PreLoginMiddleware(RequestDelegate next, INewCookiAddService cookiAddUser)
         {
             this.CookiAddUser = cookiAddUser;
            // _context = context;
@@ -51,7 +51,10 @@ namespace WebApplication1.CastomMiddleware
             //при SingOut нужно создовать новый User[Cooki]
             else if (!context.Request.Cookies.ContainsKey("User"))
             {
-               await CookiAddUser.CookiAddUserAsync(context, _db);   // await UserAddCooki(context,_db);
+                if (!context.Request.Cookies.ContainsKey("LogIned"))
+                {
+                    await CookiAddUser.CookiAddUserAsync(context, _db);   // await UserAddCooki(context,_db);
+                }
             }
             await next.Invoke(context);
         

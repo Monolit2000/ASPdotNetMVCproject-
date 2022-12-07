@@ -7,6 +7,7 @@ using WebApplication1.CastomMiddleware;
 using WebApplication1.CustomService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using WebApplication1.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
-builder.Services.AddTransient<INewCookiAddUserService, CookiAddUser>();
-builder.Services.AddTransient<ICoookiUserRegestratorService, CoookiUserRegestrator>();
+builder.Services.AddTransient<INewCookiAddService, CookiAddUser>();
 builder.Services.AddTransient<IReversCookiUserToAspcooki, ReversCookiUserToAspcooki>();
-
+//builder.Services.AddScoped<ReversCookiFilter>();
+builder.Services.AddTransient<INewLogInedCookiAdd, NewLogInedCookiAdd>();
 
 
 string connectionCardItem = builder.Configuration.GetConnectionString("DefaultConnection");

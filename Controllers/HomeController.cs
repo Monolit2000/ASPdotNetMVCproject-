@@ -94,7 +94,7 @@ namespace WebApplication1.Controllers
             
                     ViewBag.TestlistCartinUser = db.Users.Include(c => c.CartItems).ToList();
 
-            return View("Test");
+            return View("Index");
         }
 
         
@@ -119,7 +119,7 @@ namespace WebApplication1.Controllers
             ViewBag.TestlistCartinUser = db.Users.Include(c => c.CartItems).ToList();
                  
             
-            return View("Test");
+            return View("Index");
         }
 
         [HttpGet]
@@ -151,10 +151,7 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        public IActionResult PartialView()
-        {
-            return PartialView(); 
-        }
+     
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
