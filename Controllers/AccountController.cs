@@ -55,6 +55,7 @@ namespace WebApplication1.Controllers
         {
             var _httpcontext = HttpContext;
             _httpcontext.Response.Cookies.Delete("Barier");
+
             if (_db.Users.Any(c => c.Email == user.Email))
             {
                 return Content($" {user.Email} Вже зареєстрований ;) ");
@@ -111,8 +112,6 @@ namespace WebApplication1.Controllers
                  
             else return RedirectToAction("Registration");   
         }
-
-        
 
         public async Task<IActionResult> SignOutAuthorization()
         {

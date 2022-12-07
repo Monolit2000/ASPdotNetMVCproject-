@@ -18,21 +18,13 @@ namespace WebApplication1.CastomMiddleware
         }
         public async Task InvokeAsync(HttpContext context, ApplicationContext _db)
         {
-            var user = context.User.Identity;
-            string? UserCooKiId = context.Request.Cookies["User"];
 
-            if (context.Request.Cookies.ContainsKey("User") && !user.IsAuthenticated && !_db.Users.Any(a => a.CookiId == UserCooKiId))
+            if (!context.Request.Cookies.ContainsKey("User") && !context.Request.Cookies.ContainsKey("LogIned"))
             {
-                await _db.Users.AddAsync(new User { CookiId = UserCooKiId });
-                await _db.SaveChangesAsync();
-
-            } 
-            else if (!context.Request.Cookies.ContainsKey("User") && !context.Request.Cookies.ContainsKey("LogIned"))
-            {               
-               await CookiAddUser.CookiAddUserAsync(context, _db);                  
+                await CookiAddUser.CookiAddUserAsync(context, _db);
             }
             await next.Invoke(context);
-        
+
         }
     }
 
