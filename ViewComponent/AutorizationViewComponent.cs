@@ -22,19 +22,11 @@ namespace WebApplication1.ViewComponent
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            //var userClaim = context.User.FindFirst(ClaimTypes.Name);
             var user = User.Identity;
             var name = user.Name;
             var SignOut = new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Account/SignOutAuthorization\"> {name} SingOut</a>"));
             var SingIn = new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Account/SignInAuthorization\">Login</a>  <a class=\"navitem\" href=\"/Account/Registration\">Registration</a>"));
             return user.IsAuthenticated ? SignOut : SingIn;
-
-
-
-
-
-
-
         }
     }
 }

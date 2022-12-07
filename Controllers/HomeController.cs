@@ -103,13 +103,9 @@ namespace WebApplication1.Controllers
         public async Task <IActionResult> DeleteUserItemShaip(int ItemId)
         {
             string? UserCooKiId = Request.Cookies["User"];
-
             ViewBag.idItem = ItemId;
-
             var UserList = await db.Users.ToListAsync();
-
             CartItem? item = await db.CartItems.FirstOrDefaultAsync(p => p.ItemId == ItemId);
-
             User? user = await db.Users.FirstOrDefaultAsync(u => u.CookiId == UserCooKiId);
              db.Users.Include(c => c.CartItems).ToList();
                     user?.CartItems?.Remove(item);

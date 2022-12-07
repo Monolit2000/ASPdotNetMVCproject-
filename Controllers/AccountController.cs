@@ -16,52 +16,54 @@ namespace WebApplication1.Controllers
 {
     public class AccountController : Controller
     {
-        //HomeController _homeController;
-        //public AccountController(HomeController homeController)
-        //{
-        //    _homeController = homeController;
-        //}
-
+     
         ApplicationContext _db;
         INewCookiAddService _СookiAddUser;
         INewLogInedCookiAdd _NewLogInedCookiAdd;
-
+        ICustomCookiAddService _CustomCookiAddService;
         IReversCookiUserToAspcooki _CeversCookiUserToAspcooki;
 
         public AccountController(ApplicationContext context,
                                        INewCookiAddService cookiAddUser,
-                                       IReversCookiUserToAspcooki _reversCookiUserToAspcooki,
-                                       INewLogInedCookiAdd NewLogInedCookiAdd)
+                                       INewLogInedCookiAdd NewLogInedCookiAdd,
+                                       ICustomCookiAddService CustomCookiAddService,
+                                       IReversCookiUserToAspcooki reversCookiUserToAspcooki)
         {
-            _NewLogInedCookiAdd = NewLogInedCookiAdd;
-            _CeversCookiUserToAspcooki = _reversCookiUserToAspcooki;
             _db = context;
-            _СookiAddUser = cookiAddUser;
+            _СookiAddUser = cookiAddUser;                          
+            _NewLogInedCookiAdd = NewLogInedCookiAdd;
+            _CustomCookiAddService = CustomCookiAddService; 
+            _CeversCookiUserToAspcooki = reversCookiUserToAspcooki;     
         }
 
         [HttpGet]
         public IActionResult Registration()
         {
             var _httpcontext = HttpContext;
-            _СookiAddUser.CookiAddUserAsync(_httpcontext, _db);
+            _CustomCookiAddService.customCookiAdd("Barier",_httpcontext);
+            if(!_httpcontext.Request.Cookies.ContainsKey("Barier"))
+            {
+                _СookiAddUser.CookiAddUserAsync(_httpcontext, _db);
+            }
             return PartialView("Registration");
         }
 
-      //  [ReversCookiFilter]
+
+      //[ReversCookiFilter]
         [HttpPost]
         public async Task<IActionResult> Registration(User user)
         {
+            var _httpcontext = HttpContext;
+            _httpcontext.Response.Cookies.Delete("Barier");
             if (_db.Users.Any(c => c.Email == user.Email))
             {
-               // string? userCookiId = Request.Cookies["User"];
                 return Content($" {user.Email} Вже зареєстрований ;) ");
             }
             else
             {
-                var _httpcontext = HttpContext;
-
+                
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cooki");
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                        new ClaimsPrincipal(claimsIdentity));
 
@@ -82,6 +84,7 @@ namespace WebApplication1.Controllers
     
         }
 
+
         [HttpGet]
         public IActionResult SignInAuthorization()
         {
@@ -99,35 +102,38 @@ namespace WebApplication1.Controllers
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                _httpcontext.Response.Cookies.Append("User", userInDB.CookiId);
+
+                await _NewLogInedCookiAdd.LogInedCookiAddAsync(_httpcontext, _db);
+                return RedirectToAction("Index", "Home");
             }
                  
-            else return RedirectToAction("Registration");
-            _httpcontext.Response.Cookies.Append("User",userInDB.CookiId);
-
-            await _NewLogInedCookiAdd.LogInedCookiAddAsync(_httpcontext, _db);
-            return RedirectToAction("Index", "Home");   
+            else return RedirectToAction("Registration");   
         }
 
-        public async Task <IActionResult> ReversCookiUserToAspcookiAction()
-        {
-           var httpcontext = HttpContext;
-           await _CeversCookiUserToAspcooki.reversCookiUserToAspcookiAsync(httpcontext, _db);
+        
 
-            return RedirectToAction("Index", "Home");
-        }
         public async Task<IActionResult> SignOutAuthorization()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var _context = HttpContext;
-           // await _СookiAddUser.CookiAddUserAsync(_context, _db);
 
             return RedirectToAction("Index", "Home");
         }
 
-      
+        public async Task<IActionResult> ReversCookiUserToAspcookiAction()
+        {
+            var httpcontext = HttpContext;
+            await _CeversCookiUserToAspcooki.reversCookiUserToAspcookiAsync(httpcontext, _db);
 
-      
+            return RedirectToAction("Index", "Home");
+        }
 
-     
+
+
+
+
+
     }
 }

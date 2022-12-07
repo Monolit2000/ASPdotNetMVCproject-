@@ -20,6 +20,8 @@ builder.Services.AddTransient<INewCookiAddService, CookiAddUser>();
 builder.Services.AddTransient<IReversCookiUserToAspcooki, ReversCookiUserToAspcooki>();
 //builder.Services.AddScoped<ReversCookiFilter>();
 builder.Services.AddTransient<INewLogInedCookiAdd, NewLogInedCookiAdd>();
+builder.Services.AddTransient<ICustomCookiAddService, CustomCookiAdd>();
+
 
 
 string connectionCardItem = builder.Configuration.GetConnectionString("DefaultConnection");
