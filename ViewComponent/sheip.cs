@@ -21,10 +21,14 @@ namespace WebApplication1.ViewComponent
             string? CastomUserId = "CastonUser111";
             _db.Users.Include(c => c.CartItems).ToList();
             User? user = await _db.Users.FirstOrDefaultAsync(u => u.CookiId == GuidId);
-            List<CartItem> ItemCountinShape = new List<CartItem>();
+             List<CartItem> ItemCountinShape = new List<CartItem>();
+               //IEnumerable<CartItem> ItemCountinShape;
+               //ItemCountinShape = from itemm in user.CartItems select itemm;
 
             if ( user != null)
             {
+                //// ItemCountinShape = from itemm in user.CartItems select itemm;
+
                 foreach (var prod in user?.CartItems)
                 {
                     ItemCountinShape.Add(prod);
@@ -32,7 +36,7 @@ namespace WebApplication1.ViewComponent
             }
 
 
-            int caaunt = ItemCountinShape.Count();
+            // int caaunt = ItemCountinShape.Count();
             return View("ShapeItemCaunt", ItemCountinShape);
         }
     

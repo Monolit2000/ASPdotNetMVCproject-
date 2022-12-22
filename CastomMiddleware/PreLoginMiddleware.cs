@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
-using Nancy.Json;
 using WebApplication1.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
 using WebApplication1.CustomService;
+using System.Xml.Serialization;
+using Nancy.Security;
 
 namespace WebApplication1.CastomMiddleware
 {
@@ -18,8 +18,10 @@ namespace WebApplication1.CastomMiddleware
         }
         public async Task InvokeAsync(HttpContext context, ApplicationContext _db)
         {
+            var test = context.Request.Cookies["User"];
 
-            if (!context.Request.Cookies.ContainsKey("User") && !context.Request.Cookies.ContainsKey("LogIned"))
+
+            if (!context.Request.Cookies.ContainsKey("User") && !context.Request.Cookies.ContainsKey("LogIned")) 
             {
                 await CookiAddUser.CookiAddUserAsync(context, _db);
             }

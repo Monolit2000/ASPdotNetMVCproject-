@@ -11,6 +11,7 @@ using Nancy.Security;
 using System.Net.Http;
 using WebApplication1.Filters;
 using Nancy.Json;
+using System;
 
 namespace WebApplication1.Controllers
 {
@@ -24,10 +25,10 @@ namespace WebApplication1.Controllers
         IReversCookiUserToAspcooki _CeversCookiUserToAspcooki;
 
         public AccountController(ApplicationContext context,
-                                       INewCookiAddService cookiAddUser,
-                                       INewLogInedCookiAdd NewLogInedCookiAdd,
-                                       ICustomCookiAddService CustomCookiAddService,
-                                       IReversCookiUserToAspcooki reversCookiUserToAspcooki)
+                                 INewCookiAddService cookiAddUser,
+                                 INewLogInedCookiAdd NewLogInedCookiAdd,
+                                 ICustomCookiAddService CustomCookiAddService,
+                                 IReversCookiUserToAspcooki reversCookiUserToAspcooki)
         {
             _db = context;
             _СookiAddUser = cookiAddUser;                          
@@ -41,20 +42,25 @@ namespace WebApplication1.Controllers
         {
             var _httpcontext = HttpContext;
             _CustomCookiAddService.customCookiAdd("Barier",_httpcontext);
-            if(!_httpcontext.Request.Cookies.ContainsKey("Barier"))
+            if(/*!_httpcontext.Request.Cookies.ContainsKey("Barier") ||*/ !_httpcontext.Request.Cookies.ContainsKey("LogIned"))
             {
-                _СookiAddUser.CookiAddUserAsync(_httpcontext, _db);
+                    _СookiAddUser.CookiAddUserAsync(_httpcontext, _db);
             }
             return PartialView("Registration");
         }
 
-
       //[ReversCookiFilter]
+      //Переробити 
         [HttpPost]
         public async Task<IActionResult> Registration(User user)
         {
+            if (!ModelState.IsValid)
+                return Content("Модель не пройшла валідацію");
+
             var _httpcontext = HttpContext;
             _httpcontext.Response.Cookies.Delete("Barier");
+
+            
 
             if (_db.Users.Any(c => c.Email == user.Email))
             {
@@ -79,12 +85,12 @@ namespace WebApplication1.Controllers
                 await _db.SaveChangesAsync();
 
 
+
                 await _NewLogInedCookiAdd.LogInedCookiAddAsync(_httpcontext,_db);
                 return RedirectToAction("ReversCookiUserToAspcookiAction"/*"Index", "Home"*/);
             }
     
         }
-
 
         [HttpGet]
         public IActionResult SignInAuthorization()
@@ -96,13 +102,20 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> SignInAuthorization(User user)
         {
             var _httpcontext =  HttpContext;
+            //await _CustomCookiAddService.customCookiAdd("Barier", _httpcontext);
+
+            if (_httpcontext.Request.Cookies.ContainsKey("Barier"))
+            {
+                _httpcontext.Response.Cookies.Delete("Barier");
+            }
 
             var userInDB = await _db.Users.FirstOrDefaultAsync(c => c.Email == user.Email && c.Password == user.Password);
             if (userInDB != null)
             {
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
+                    new ClaimsPrincipal(claimsIdentity));
 
                 _httpcontext.Response.Cookies.Append("User", userInDB.CookiId);
 
@@ -117,6 +130,7 @@ namespace WebApplication1.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var _context = HttpContext;
+            await _СookiAddUser.CookiAddUserAsync(_context,_db);
 
             return RedirectToAction("Index", "Home");
         }

@@ -9,8 +9,9 @@ namespace WebApplication1.Models
             : base(options) 
         {
 
-          // Database.EnsureDeleted();
+           //Database.EnsureDeleted();
            Database.EnsureCreated();
+           
             
         }
 
