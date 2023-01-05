@@ -2,6 +2,6 @@
 {
     public interface ICustomCookiAddService
     {
-        Task customCookiAdd(string name, HttpContext context);
+        Task customCookiAdd(string name/*, HttpContext context*/);
     }
 }

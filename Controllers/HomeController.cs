@@ -19,21 +19,16 @@ namespace WebApplication1.Controllers
 
             db = Dbcontext;
         }
-
+        // IHttpContextAccessor accessor
 
         public IActionResult Index(int? companyId)
         {
-
-
             return View();
         }
-
         public async Task<IActionResult> ShowAddItems()
         {
             return View("item-card", await db.CartItems.ToListAsync());
         }
-
-
 
         [HttpGet]
         public IActionResult AddItem()
@@ -94,7 +89,7 @@ namespace WebApplication1.Controllers
             
                     ViewBag.TestlistCartinUser = db.Users.Include(c => c.CartItems).ToList();
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         
@@ -113,9 +108,9 @@ namespace WebApplication1.Controllers
             await db.SaveChangesAsync();
 
             ViewBag.TestlistCartinUser = db.Users.Include(c => c.CartItems).ToList();
-                 
-            
-            return View("Index");
+
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

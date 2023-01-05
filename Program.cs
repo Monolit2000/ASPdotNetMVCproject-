@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WebApplication1.Filters;
 
+const string cookieString = "Cookies";
+
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 
 builder.Services.AddDistributedMemoryCache();
@@ -20,6 +20,7 @@ builder.Services.AddTransient<INewCookiAddService, CookiAddUser>();
 builder.Services.AddTransient<IReversCookiUserToAspcooki, ReversCookiUserToAspcooki>();
 builder.Services.AddTransient<INewLogInedCookiAdd, NewLogInedCookiAdd>();
 builder.Services.AddTransient<ICustomCookiAddService, CustomCookiAdd>();
+builder.Services.AddHttpContextAccessor();
 
 
 
@@ -28,13 +29,12 @@ string connectionCardItem = builder.Configuration.GetConnectionString("DefaultCo
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionCardItem));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddAuthentication("Cookies");
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
-builder.Services.AddAuthorization();
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options => options.LoginPath = "/Authorization/SignInAuthorization");
+builder.Services.AddAuthentication(cookieString)
+   .AddCookie(cookieString,options => {
+       options.LoginPath = "/Authorization/SignInAuthorization";
+       options.AccessDeniedPath = "/";
+       });
 
 var app = builder.Build();
 

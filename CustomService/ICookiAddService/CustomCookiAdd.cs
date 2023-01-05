@@ -4,13 +4,20 @@ namespace WebApplication1.CustomService
 {
     public class CustomCookiAdd : ICustomCookiAddService
     {
-        public async Task customCookiAdd(string name, HttpContext context)
+        IHttpContextAccessor _accessor;   
+        public CustomCookiAdd(IHttpContextAccessor accessor)
         {
-            if(!context.Request.Cookies.ContainsKey($"{name}") )
+            _accessor = accessor;   
+
+        }
+        public async Task customCookiAdd(string name/*, HttpContext context*/)
+        {
+            if(!_accessor.HttpContext.Request.Cookies.ContainsKey($"{name}") )
             {
+
                 Guid GUID = Guid.NewGuid();
                 string UserGUID = new JavaScriptSerializer().Serialize(GUID);
-                context.Response.Cookies.Append($"{name}", UserGUID);
+                _accessor.HttpContext.Response.Cookies.Append($"{name}", UserGUID);
             }
         }
     }

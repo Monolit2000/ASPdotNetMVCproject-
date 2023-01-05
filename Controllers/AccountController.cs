@@ -13,11 +13,17 @@ using WebApplication1.Filters;
 using Nancy.Json;
 using System;
 
+
+
+
 namespace WebApplication1.Controllers
 {
+
     public class AccountController : Controller
     {
-     
+        const string cookieString = "Cookies";
+        // IHttpContextAccessor accessor
+
         ApplicationContext _db;
         INewCookiAddService _СookiAddUser;
         INewLogInedCookiAdd _NewLogInedCookiAdd;
@@ -41,7 +47,7 @@ namespace WebApplication1.Controllers
         public IActionResult Registration()
         {
             var _httpcontext = HttpContext;
-            _CustomCookiAddService.customCookiAdd("Barier",_httpcontext);
+            _CustomCookiAddService.customCookiAdd("Barier"/*,_httpcontext*/);
             if(/*!_httpcontext.Request.Cookies.ContainsKey("Barier") ||*/ !_httpcontext.Request.Cookies.ContainsKey("LogIned"))
             {
                     _СookiAddUser.CookiAddUserAsync(_httpcontext, _db);
@@ -61,7 +67,6 @@ namespace WebApplication1.Controllers
             _httpcontext.Response.Cookies.Delete("Barier");
 
             
-
             if (_db.Users.Any(c => c.Email == user.Email))
             {
                 return Content($" {user.Email} Вже зареєстрований ;) ");
@@ -70,21 +75,17 @@ namespace WebApplication1.Controllers
             {
                 
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cooki");
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                       new ClaimsPrincipal(claimsIdentity));
-
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, cookieString);
+                ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                await HttpContext.SignInAsync(claimsPrincipal);
 
                 string? userCookiId = Request.Cookies["User"];
-
-
+     
                 var userr = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == userCookiId);
                 userr.Email = user.Email;
                 userr.Password = user.Password;
                 userr.CookiId = userCookiId;
                 await _db.SaveChangesAsync();
-
-
 
                 await _NewLogInedCookiAdd.LogInedCookiAddAsync(_httpcontext,_db);
                 return RedirectToAction("ReversCookiUserToAspcookiAction"/*"Index", "Home"*/);
@@ -113,10 +114,10 @@ namespace WebApplication1.Controllers
             if (userInDB != null)
             {
                 var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, 
-                    new ClaimsPrincipal(claimsIdentity));
-
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, cookieString);
+                ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                await HttpContext.SignInAsync(cookieString, claimsPrincipal);
+                
                 _httpcontext.Response.Cookies.Append("User", userInDB.CookiId);
 
                 await _NewLogInedCookiAdd.LogInedCookiAddAsync(_httpcontext, _db);
@@ -142,11 +143,6 @@ namespace WebApplication1.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
-
-
-
-
 
     }
 }
