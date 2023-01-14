@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using WebApplication1.Filters;
 
 const string cookieString = "Cookies";
+const string cookieScheme = "AnonimCookies";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,12 +30,36 @@ string connectionCardItem = builder.Configuration.GetConnectionString("DefaultCo
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionCardItem));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(opts =>
+{
+    opts.AddPolicy("Admin", policy =>
+    {
+        policy.RequireClaim("role", "User");
+    });
+    opts.AddPolicy("Anonimus", policy =>
+    {
+        policy.RequireClaim("role","AnonimUser");
+    });
+});
+
 builder.Services.AddAuthentication(cookieString)
-   .AddCookie(cookieString,options => {
+   .AddCookie(cookieString,options => 
+   {
        options.LoginPath = "/Authorization/SignInAuthorization";
        options.AccessDeniedPath = "/";
-       });
+       options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
+   });
+
+//builder.Services.AddAuthentication(cookieScheme)
+//   .AddCookie(cookieScheme, options =>
+//   {
+//      // options.LoginPath = "/Authorization/SignInAuthorization";
+//       options.AccessDeniedPath = "/";
+//       options.Cookie.Name = "Anonimus";
+//       //options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
+//   });
+
+
 
 var app = builder.Build();
 
@@ -58,7 +83,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthorization();

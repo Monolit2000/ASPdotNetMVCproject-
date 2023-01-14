@@ -3,10 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 namespace WebApplication1.Models
 {
-    public class AnonymousUser : User   
+    public class AnonymousUser 
     {
         [Key]
-        public int Id { get; set; } 
+        public int AnonId { get; set; }
+
+        public string? CookiId { get; set; }
+
 
 
 

@@ -20,12 +20,20 @@ namespace WebApplication1.ViewComponent
                 this.db = db;
                 
         }
+        //[Authorize(Policy = "Admin")]
+
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var user = User.Identity;
             var name = user.Name;
-            var SignOut = new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Account/SignOutAuthorization\"> {name} SingOut</a>"));
+
+            var AuthenticationType = user.AuthenticationType;
+            var role = HttpContext.User.FindFirst("role");
+            var SignOut = new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Account/SignOutAuthorization\"> {name}-{role} SingOut </a>"));
             var SingIn = new HtmlContentViewComponentResult(new HtmlString($"<a class=\"navitem\" href=\"/Account/SignInAuthorization\">Login</a>  <a class=\"navitem\" href=\"/Account/Registration\">Registration</a>"));
+          
+            
+
             return user.IsAuthenticated ? SignOut : SingIn;
         }
     }

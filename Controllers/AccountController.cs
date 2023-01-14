@@ -22,6 +22,8 @@ namespace WebApplication1.Controllers
     public class AccountController : Controller
     {
         const string cookieString = "Cookies";
+        const string cookieScheme = "AnonimCookies";
+    
         // IHttpContextAccessor accessor
 
         ApplicationContext _db;
@@ -40,7 +42,7 @@ namespace WebApplication1.Controllers
             _СookiAddUser = cookiAddUser;                          
             _NewLogInedCookiAdd = NewLogInedCookiAdd;
             _CustomCookiAddService = CustomCookiAddService; 
-            _CeversCookiUserToAspcooki = reversCookiUserToAspcooki;     
+            _CeversCookiUserToAspcooki = reversCookiUserToAspcooki;
         }
 
         [HttpGet]
@@ -73,8 +75,12 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                
-                var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+
+                var claims = new List<Claim> 
+                { 
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim("role", "User"),
+                };
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, cookieString);
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await HttpContext.SignInAsync(claimsPrincipal);
@@ -82,6 +88,9 @@ namespace WebApplication1.Controllers
                 string? userCookiId = Request.Cookies["User"];
      
                 var userr = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == userCookiId);
+                if (userr == null)
+                  return Content($" {user.Email} Not found in database ;)");
+                
                 userr.Email = user.Email;
                 userr.Password = user.Password;
                 userr.CookiId = userCookiId;
@@ -104,7 +113,6 @@ namespace WebApplication1.Controllers
         {
             var _httpcontext =  HttpContext;
             //await _CustomCookiAddService.customCookiAdd("Barier", _httpcontext);
-
             if (_httpcontext.Request.Cookies.ContainsKey("Barier"))
             {
                 _httpcontext.Response.Cookies.Delete("Barier");
@@ -113,10 +121,17 @@ namespace WebApplication1.Controllers
             var userInDB = await _db.Users.FirstOrDefaultAsync(c => c.Email == user.Email && c.Password == user.Password);
             if (userInDB != null)
             {
-                var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Email) };
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim("role", "User"),
+                };
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, cookieString);
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                await HttpContext.SignInAsync(cookieString, claimsPrincipal);
+                await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties() 
+                {
+                    IsPersistent = true,
+                });
                 
                 _httpcontext.Response.Cookies.Append("User", userInDB.CookiId);
 
@@ -129,7 +144,7 @@ namespace WebApplication1.Controllers
 
         public async Task<IActionResult> SignOutAuthorization()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(cookieString);
             var _context = HttpContext;
             await _СookiAddUser.CookiAddUserAsync(_context,_db);
 
