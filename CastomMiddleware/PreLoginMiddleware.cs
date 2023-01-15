@@ -26,21 +26,22 @@ namespace WebApplication1.CastomMiddleware
             //var role =  context.User.FindFirst("role").Value;
 
             
-             
+                   
                 if (!context.Request.Cookies.ContainsKey("User") && !context.Request.Cookies.ContainsKey("LogIned")) 
                 {
 
 
                 //await context.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.Name, "eeAnonimUser") })));
 
-                //var claims = new List<Claim> { new Claim("role" , "AnonimUser") };
-                //ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, _cookieScheme);
-                //ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                  var claims = new List<Claim> { new Claim("role" , "AnonimUser") };
+                  ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, _cookieScheme);
+                  ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                  await context.SignInAsync(_cookieScheme, claimsPrincipal);
+                     //await context.SignOutAsync(_cookieScheme);
+                  
 
-                await context.SignOutAsync(_cookieScheme);
-                //await context.SignInAsync(claimsPrincipal);
+                  await CookiAddUser.CookiAddUserAsync(context, _db);
 
-                await CookiAddUser.CookiAddUserAsync(context, _db);
                 }
                 // if (context.Request.Cookies.ContainsKey("User") && context.Request.Cookies.ContainsKey("Anonimus"))
                 //{

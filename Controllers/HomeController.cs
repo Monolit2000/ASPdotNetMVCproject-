@@ -72,7 +72,22 @@ namespace WebApplication1.Controllers
             return NotFound();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AnonimusTest()
+        {
+           
+            db.Database.ExecuteSqlRaw(
+    @"CREATE VIEW View_BlogPostCounts AS
+                SELECT b.Name, Count(p.PostId) as PostCount
+                FROM Blogs b
+                JOIN Posts p on p.BlogId = b.BlogId
+                GROUP BY b.Name");
 
+            var _anonUser = await db.AnonymousUsers.FirstOrDefaultAsync(f => f.AnonId == 1 );
+            CartItem? item = await db.CartItems.FirstOrDefaultAsync(p => p.ItemId == 2);
+            _anonUser.CartItemsId.Add(3);
+            return Ok();
+        }
 
         [HttpPost]
        // [Authorize]

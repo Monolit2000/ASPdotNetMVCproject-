@@ -12,7 +12,7 @@ namespace WebApplication1.CustomService
             string UserGUID = new JavaScriptSerializer().Serialize(GUID);
             context.Response.Cookies.Append("User", UserGUID);
 
-            string? UserCooKiIdd = context.Request.Cookies["User"];
+            //string? UserCooKiIdd = context.Request.Cookies["User"];
             await _db.Users.AddAsync(new User { CookiId = UserGUID });
             await _db.SaveChangesAsync();
         }

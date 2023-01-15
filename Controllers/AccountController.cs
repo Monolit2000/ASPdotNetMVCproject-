@@ -89,7 +89,7 @@ namespace WebApplication1.Controllers
      
                 var userr = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == userCookiId);
                 if (userr == null)
-                  return Content($" {user.Email} Not found in database ;)");
+                  return Content($" {userCookiId} Not found in database ;)");
                 
                 userr.Email = user.Email;
                 userr.Password = user.Password;
@@ -113,6 +113,8 @@ namespace WebApplication1.Controllers
         {
             var _httpcontext =  HttpContext;
             //await _CustomCookiAddService.customCookiAdd("Barier", _httpcontext);
+
+            await HttpContext.SignOutAsync(cookieScheme);
             if (_httpcontext.Request.Cookies.ContainsKey("Barier"))
             {
                 _httpcontext.Response.Cookies.Delete("Barier");
@@ -128,7 +130,7 @@ namespace WebApplication1.Controllers
                 };
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, cookieString);
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                await HttpContext.SignInAsync(claimsPrincipal, new AuthenticationProperties() 
+                await HttpContext.SignInAsync(cookieString ,claimsPrincipal, new AuthenticationProperties() 
                 {
                     IsPersistent = true,
                 });

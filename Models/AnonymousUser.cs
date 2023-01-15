@@ -7,11 +7,8 @@ namespace WebApplication1.Models
     {
         [Key]
         public int AnonId { get; set; }
-
         public string? CookiId { get; set; }
-
-
-
+        public List<int>? CartItemsId { get; set; } 
 
     }
 }

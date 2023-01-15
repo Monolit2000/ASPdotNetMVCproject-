@@ -45,9 +45,15 @@ builder.Services.AddAuthorization(opts =>
 builder.Services.AddAuthentication(cookieString)
    .AddCookie(cookieString,options => 
    {
-       options.LoginPath = "/Authorization/SignInAuthorization";
+       options.LoginPath = "/";
        options.AccessDeniedPath = "/";
-       options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
+       //options.ExpireTimeSpan = TimeSpan.FromSeconds(5);
+   })
+   .AddCookie(cookieScheme, options =>
+   {
+       options.LoginPath = "/";
+       options.AccessDeniedPath = "/";
+       options.Cookie.Name = "Anonim";
    });
 
 //builder.Services.AddAuthentication(cookieScheme)
