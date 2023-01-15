@@ -29,8 +29,9 @@ namespace WebApplication1.Controllers
         {
             return View("item-card", await db.CartItems.ToListAsync());
         }
-
+        
         [HttpGet]
+      //  [Authorize(Policy = "Admin")]
         public IActionResult AddItem()
         {
             return View();
@@ -39,7 +40,7 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
 
-        // Добавление карточки с товаром и нахуя я делаю админку
+       
         public async Task<IActionResult> AddItem(CartItem Item)
         {
             db.CartItems.Add(Item);
@@ -55,8 +56,9 @@ namespace WebApplication1.Controllers
             return View("getItemToCardView");
         }
 
-        // Удаление карточки с товаром и нахуя я делаю админку 
+       
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Delete(int? idItem)
         {
             if (idItem != null)
@@ -73,21 +75,21 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AnonimusTest()
-        {
+    //    public async Task<IActionResult> AnonimusTest()
+    //    {
            
-            db.Database.ExecuteSqlRaw(
-    @"CREATE VIEW View_BlogPostCounts AS
-                SELECT b.Name, Count(p.PostId) as PostCount
-                FROM Blogs b
-                JOIN Posts p on p.BlogId = b.BlogId
-                GROUP BY b.Name");
+    //        db.Database.ExecuteSqlRaw(
+    //        @"CREATE VIEW View_BlogPostCounts AS
+    //            SELECT b.Name, Count(p.PostId) as PostCount
+    //            FROM Blogs b
+    //            JOIN Posts p on p.BlogId = b.BlogId
+    //            GROUP BY b.Name");
 
-            var _anonUser = await db.AnonymousUsers.FirstOrDefaultAsync(f => f.AnonId == 1 );
-            CartItem? item = await db.CartItems.FirstOrDefaultAsync(p => p.ItemId == 2);
-            _anonUser.CartItemsId.Add(3);
-            return Ok();
-        }
+    //        var _anonUser = await db.AnonymousUsers.FirstOrDefaultAsync(f => f.AnonId == 1 );
+    //        CartItem? item = await db.CartItems.FirstOrDefaultAsync(p => p.ItemId == 2);
+    //        _anonUser.CartItemsId.Add(3);
+    //        return Ok();
+    //    }
 
         [HttpPost]
        // [Authorize]

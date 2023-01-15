@@ -25,9 +25,9 @@ namespace WebApplication1.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<AnonymousUser>()
-            .HasMany(b => b.CartItemsId).HasNoKey();
-            //.WithOne();
+            //modelBuilder.Entity<AnonymousUser>()
+            //.HasMany(b => b.CartItemsId).HasNoKey();
+            ////.WithOne();
 
             //modelBuilder.Entity<User>().HasAlternateKey(u => u.CookiId);
             // modelBuilder.Entity<User>().HasKey(u => u.CookiId);

@@ -126,9 +126,9 @@ namespace WebApplication1.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Email),
-                    new Claim("role", "User"),
+                    new Claim("role","User"),
                 };
-                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, cookieString);
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await HttpContext.SignInAsync(cookieString ,claimsPrincipal, new AuthenticationProperties() 
                 {

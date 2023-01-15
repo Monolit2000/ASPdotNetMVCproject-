@@ -33,7 +33,7 @@ namespace WebApplication1.CastomMiddleware
 
                 //await context.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.Name, "eeAnonimUser") })));
 
-                  var claims = new List<Claim> { new Claim("role" , "AnonimUser") };
+                  var claims = new List<Claim> { new Claim("Anonimrole", "AnonimUser") };
                   ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, _cookieScheme);
                   ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                   await context.SignInAsync(_cookieScheme, claimsPrincipal);
