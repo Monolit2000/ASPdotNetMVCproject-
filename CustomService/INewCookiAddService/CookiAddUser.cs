@@ -9,11 +9,8 @@ namespace WebApplication1.CustomService
         public async Task CookiAddUserAsync(HttpContext context, ApplicationContext _db)
         {
             Guid GUID = Guid.NewGuid();
-            string UserGUID = new JavaScriptSerializer().Serialize(GUID);
-            context.Response.Cookies.Append("User", UserGUID);
-
-            //string? UserCooKiIdd = context.Request.Cookies["User"];
-            await _db.Users.AddAsync(new User { CookiId = UserGUID });
+            context.Response.Cookies.Append("User", GUID.ToString());
+            await _db.Users.AddAsync(new User { CookiId = GUID.ToString() });
             await _db.SaveChangesAsync();
         }
 

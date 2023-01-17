@@ -34,14 +34,15 @@ builder.Services.AddAuthorization(opts =>
 {
     opts.AddPolicy("Admin", policy =>
     {
-        policy.RequireAuthenticatedUser()
-        .AddAuthenticationSchemes(cookieString)
-        .RequireClaim("role", "User");
-        
+          policy.RequireAuthenticatedUser()
+         .AddAuthenticationSchemes(cookieString)
+         .RequireClaim("role", "User");
     });
     opts.AddPolicy("Anonimus", policy =>
     {
-        policy.RequireClaim("Anonimrole","AnonimUser");
+          policy.RequireAuthenticatedUser()
+         .AddAuthenticationSchemes(cookieScheme)
+         .RequireClaim("Anonimrole","AnonimUser");
     });
 });
 
