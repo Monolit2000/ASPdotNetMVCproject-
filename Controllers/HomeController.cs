@@ -4,6 +4,7 @@ using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
 using Nancy.Json;
 using Microsoft.AspNetCore.Authorization;
+using WebApplication1.CustomService;
 //using System.Net;
 
 namespace WebApplication1.Controllers
@@ -13,8 +14,13 @@ namespace WebApplication1.Controllers
 
         private readonly ILogger<HomeController> _logger;
         ApplicationContext db;
-        public HomeController(ILogger<HomeController> logger,
-            ApplicationContext Dbcontext)
+
+        IHttpContextAccessor _context;
+        public HomeController(
+            ILogger<HomeController> logger,
+            ApplicationContext Dbcontext,
+            IHttpContextAccessor context,
+            ICustomCookiAddService cookiAdd)
         {
 
             db = Dbcontext;
@@ -29,9 +35,9 @@ namespace WebApplication1.Controllers
         {
             return View("item-card", await db.CartItems.ToListAsync());
         }
-        
+
         [HttpGet]
-      //  [Authorize(Policy = "Admin")]
+        //  [Authorize(Policy = "Admin")]
         public IActionResult AddItem()
         {
             return View();
@@ -40,7 +46,7 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
 
-       
+
         public async Task<IActionResult> AddItem(CartItem Item)
         {
             db.CartItems.Add(Item);
@@ -56,7 +62,7 @@ namespace WebApplication1.Controllers
             return View("getItemToCardView");
         }
 
-       
+
         [HttpPost]
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> Delete(int? idItem)
@@ -74,46 +80,88 @@ namespace WebApplication1.Controllers
             return NotFound();
         }
 
-        [HttpPost]
-    //    public async Task<IActionResult> AnonimusTest()
-    //    {
-           
-    //        db.Database.ExecuteSqlRaw(
-    //        @"CREATE VIEW View_BlogPostCounts AS
-    //            SELECT b.Name, Count(p.PostId) as PostCount
-    //            FROM Blogs b
-    //            JOIN Posts p on p.BlogId = b.BlogId
-    //            GROUP BY b.Name");
+        //[HttpPost]
 
-    //        var _anonUser = await db.AnonymousUsers.FirstOrDefaultAsync(f => f.AnonId == 1 );
-    //        CartItem? item = await db.CartItems.FirstOrDefaultAsync(p => p.ItemId == 2);
-    //        _anonUser.CartItemsId.Add(3);
-    //        return Ok();
-    //    }
+        //public async Task<IActionResult> AddToShoppingCartItems()
+        //{
+        //}
+        public async void AddShoppingCart(int ItemId)
+        {
+            var ShoppingCartId = GetShoppingCartId();
+            var ShoppingCart = db.ShoppingCartItems.SingleOrDefault(
+                c => c.UserId == ShoppingCartId
+                && c.ItemId == ItemId);
 
-        [HttpPost]
-       // [Authorize]
+            if (ShoppingCart == null)
+            {
+                ShoppingCart = new ShoppingCart
+                {
+                    UserId = ShoppingCartId,
+                    CartId = Guid.NewGuid().ToString(),
+                    ItemId = ItemId,
+                    cartitem = await db.CartItems.SingleOrDefaultAsync(p => p.ItemId == ItemId),
+                    Quantity = 1
+                };
+                db.ShoppingCartItems.Add(ShoppingCart);
+            }
+            else
+            {
+                ShoppingCart.Quantity++;
+            }
+            db.SaveChanges();
+        }
+
+        public string GetShoppingCartId()
+        {
+            return Request.Cookies["ShoppingCartId"];
+        }
+
+
+        public List<ShoppingCart> GetShoppingCart()
+        {
+            var ShoppingCartId = GetShoppingCartId();
+
+            return db.ShoppingCartItems.Where(c => c.UserId == ShoppingCartId).ToList();
+        }
+
+        // [Authorize]
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddCartItems( int ItemId )
+        //{
+        //   await AddShoppingCart(ItemId);
+
+        //   return View( GetShoppingCart() );   
+
+        //}
+
         public async Task<IActionResult> AddUserItemCaunt(int ItemId)
-        {         
+        {
+
+            AddShoppingCart(ItemId);
             string? UserCooKiId = Request.Cookies["User"];
+            Console.WriteLine($"{UserCooKiId}//////////////////////////////////////////////");
             ViewBag.idItem = ItemId;
             string? CastomUserId = "CastonUser111";
-     
+
             CartItem? item = await db.CartItems.FirstOrDefaultAsync(p => p.ItemId == ItemId);
             User? user = await db.Users.FirstOrDefaultAsync(u => u.CookiId == UserCooKiId);
-                    user?.CartItems?.Add(item);
-                    await db.SaveChangesAsync();
-            
-                    ViewBag.TestlistCartinUser = db.Users.Include(c => c.CartItems).ToList();
+            user?.CartItems?.Add(item);
+            await db.SaveChangesAsync();
+
+            ViewBag.TestlistCartinUser = db.Users.Include(c => c.CartItems).ToList();
 
             return RedirectToAction("Index");
         }
 
-        
+
 
         [HttpPost]
+        [Authorize(Policy = "Admin")]
         public async Task <IActionResult> DeleteUserItemShaip(int ItemId)
         {
+            //Response.Cookies.Append("ShoppingCartId", User.Identity.Name);
+
             string? UserCooKiId = Request.Cookies["User"];
             ViewBag.idItem = ItemId;
             var UserList = await db.Users.ToListAsync();

@@ -28,9 +28,7 @@ namespace WebApplication1.CastomMiddleware
             
                    
                 if (!context.Request.Cookies.ContainsKey("User") && !context.Request.Cookies.ContainsKey("LogIned")) 
-                {
-
-
+                {               
                 //await context.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.Name, "eeAnonimUser") })));
 
                   var claims = new List<Claim> { new Claim("Anonimrole", "AnonimUser") };
@@ -41,12 +39,31 @@ namespace WebApplication1.CastomMiddleware
                   
 
                   await CookiAddUser.CookiAddUserAsync(context, _db);
-
                 }
-                // if (context.Request.Cookies.ContainsKey("User") && context.Request.Cookies.ContainsKey("Anonimus"))
-                //{
-                //    await context.SignOutAsync(_cookieScheme);
-                //}
+
+            // создаю куки идентификатор карзины покупок для  
+
+            if (!_context.HttpContext.Request.Cookies.ContainsKey("ShoppingCartId"))
+                {
+                    if (_context.HttpContext.User.Identity.Name != null)
+                    {
+                        _context.HttpContext.Response.Cookies.Append(
+                            "ShoppingCartId", 
+                            _context.HttpContext.User.Identity.Name,
+                            new CookieOptions {HttpOnly = true});
+                    }
+                    else
+                    {
+                       Guid guid = Guid.NewGuid();
+                       var cook = _context.HttpContext.Request.Cookies["Anonim"];
+                                       
+                       // _context.HttpContext.Response.Cookies.Append("ShoppingCartId", _context.HttpContext.Request.Cookies["Anonim"]  /*guid.ToString()*/);
+                    }
+                }
+            // if (context.Request.Cookies.ContainsKey("User") && context.Request.Cookies.ContainsKey("Anonimus"))
+            //{
+            //    await context.SignOutAsync(_cookieScheme);
+            //}
 
             await next.Invoke(context);
 

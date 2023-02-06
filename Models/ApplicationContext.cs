@@ -6,7 +6,7 @@ namespace WebApplication1.Models
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<CartItem> CartItems { get; set; } = null!;
         public DbSet<AnonymousUser> AnonymousUsers { get; set; } = null!;
-
+        public DbSet<ShoppingCart> ShoppingCartItems { get; set; } = null!;
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options) 
         {

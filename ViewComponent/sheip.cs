@@ -17,6 +17,8 @@ namespace WebApplication1.ViewComponent
         public async Task<IViewComponentResult> InvokeAsync()
         {
              
+
+
             string? GuidId = Request.Cookies["User"];
             string? CastomUserId = "CastonUser111";
             _db.Users.Include(c => c.CartItems).ToList();

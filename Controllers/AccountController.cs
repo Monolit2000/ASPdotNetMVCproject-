@@ -75,7 +75,7 @@ namespace WebApplication1.Controllers
             }
             else
             {
-
+                // регистрирую пользователя с помощу куки 
                 var claims = new List<Claim> 
                 { 
                     new Claim(ClaimTypes.Name, user.Email),
@@ -84,11 +84,19 @@ namespace WebApplication1.Controllers
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, cookieString);
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 await HttpContext.SignInAsync(claimsPrincipal);
+                ////////////////////////////////////////////////////////////////////////////////
 
                 string? userCookiId = Request.Cookies["User"];
      
                 var userr = await _db.Users.FirstOrDefaultAsync(c => c.CookiId == userCookiId);
                 if (userr == null)
+                {
+                    await _db.Users.AddAsync(new User { 
+                        Email = user.Email,
+                        Password = user.Password, 
+                        CookiId = userCookiId,
+                    });
+                }    
                   return Content($" {userCookiId} Not found in database ;)");
                 
                 userr.Email = user.Email;
@@ -106,6 +114,8 @@ namespace WebApplication1.Controllers
         public IActionResult SignInAuthorization()
         {
             return PartialView("SignInAuthorization");
+
+
         }
 
         [HttpPost]

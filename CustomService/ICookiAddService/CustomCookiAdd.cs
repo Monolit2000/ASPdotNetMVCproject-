@@ -17,7 +17,9 @@ namespace WebApplication1.CustomService
 
                 Guid GUID = Guid.NewGuid();
                 string UserGUID = new JavaScriptSerializer().Serialize(GUID);
-                _HttpCookieAccessor.HttpContext.Response.Cookies.Append($"{name}", UserGUID);
+                CookieOptions options = new CookieOptions();
+                options.HttpOnly = true; 
+                _HttpCookieAccessor.HttpContext.Response.Cookies.Append($"{name}", UserGUID, options);
             }
         }
     }
